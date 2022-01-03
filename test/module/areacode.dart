@@ -6,11 +6,16 @@ import 'package:path/path.dart' as p;
 
 void main() async {
   areaCode tm = areaCode();
-  // await tm.getAreacodeList();
+  await tm.getAreacodeList();
+
+  // List<String> regionList = ['남해', '진주'];
+  // dynamic result = regionList.contains('서울');
+  // print(result);
+  // List<String>? locationNameList = await tm.getLocationNameList();
 
   // Stopwatch stopwatch = new Stopwatch()..start();
-  var pathFile = p.join(Directory.current.path, 'data', 'data.json');
-  print(pathFile);
+  // var pathFile = p.join(Directory.current.path, 'data', 'data.json');
+  // print(pathFile);
   // var db = jsondb(FileSync(pathFile));
   // db.defaults({'sample': 'test'}).write();
   // List<dynamic> locationList = db.get('locatoin').value();

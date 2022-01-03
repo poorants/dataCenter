@@ -1,11 +1,10 @@
 import 'dart:convert' as convert;
-import 'dart:ffi';
 import 'package:http/http.dart' as http;
-import 'package:xml_parser/xml_parser.dart';
 import 'package:xml2json/xml2json.dart';
 import 'dart:io';
 import 'package:localdb/jsondb.dart';
 import 'package:localdb/file/file.dart';
+import 'package:path/path.dart' as p;
 
 class areaCode {
   Future<List<String>?> _getLocationNameList() async {
@@ -34,12 +33,17 @@ class areaCode {
     }
   }
 
+  isInclude(List<String> targetList, String key, String value) {
+    // targetList.
+  }
+
   getAreacodeList() async {
     var pathFile = "${Directory.current.path}/data.json";
     var db = jsondb(FileSync(pathFile));
 
-    List<String>? locationNameList = await _getLocationNameList();
-    db.defaults({'locatoin': locationNameList}).write();
+    List<String>? regionNameList = await _getLocationNameList();
+    // db.defaults({'locatoin': locationNameList}).write();
+
     String authority = 'apis.data.go.kr';
     String unencodedPath = '/1741000/StanReginCd/getStanReginCdList';
     String serviceKey =
@@ -63,20 +67,29 @@ class areaCode {
         var data = convert.jsonDecode(response.body)['StanReginCd'];
         if (data == null) break;
 
-        areacodeList.addAll(data.last['row']);
+        var rows = data.last['row'];
+        for (var row in rows) {
+          String regionCode = row['region_cd'].toString().substring(0, 5);
+          String regionName = row['locatadd_nm'];
+          if (regionNameList!.contains(regionName)) {
+            print('regionCode : $regionCode, regionName : ${regionName}');
+            db
+                .get("region")
+                .push({"code": regionCode, "name": regionName}).write();
+          }
+        }
       } else {
         print(response.statusCode);
       }
-
       pageNo++;
     }
 
-    for (var areacode in areacodeList) {
-      String locationName = areacode['locatadd_nm'];
-      Iterable<String> searchList =
-          locationNameList!.where((element) => element == locationName);
-      if (searchList.length > 0) print(areacode.toString());
-    }
+    // for (var areacode in areacodeList) {
+    //   String locationName = areacode['locatadd_nm'];
+    //   Iterable<String> searchList =
+    //       locationNameList!.where((element) => element == locationName);
+    //   if (searchList.length > 0) print(areacode.toString());
+    // }
 
     // db.defaults({'areacode': areacodeList}).write();
 
