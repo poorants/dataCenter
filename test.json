@@ -1,0 +1,13 @@
+{
+  "region": [
+    {
+      "distrinctName": "서울특별시",
+      "cityList": [
+        {
+          "name": "종로구",
+          "code": "21000"
+        }
+      ]
+    }
+  ]
+}

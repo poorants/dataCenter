@@ -84,15 +84,6 @@ class areaCode {
       pageNo++;
     }
 
-    // for (var areacode in areacodeList) {
-    //   String locationName = areacode['locatadd_nm'];
-    //   Iterable<String> searchList =
-    //       locationNameList!.where((element) => element == locationName);
-    //   if (searchList.length > 0) print(areacode.toString());
-    // }
-
-    // db.defaults({'areacode': areacodeList}).write();
-
     print(areacodeList.length);
   }
 }
