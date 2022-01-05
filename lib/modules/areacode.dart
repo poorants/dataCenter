@@ -4,7 +4,6 @@ import 'package:xml2json/xml2json.dart';
 import 'dart:io';
 import 'package:localdb/jsondb.dart';
 import 'package:localdb/file/file.dart';
-import 'package:path/path.dart' as p;
 
 class areaCode {
   Future<List<String>?> _getLocationNameList() async {
@@ -42,7 +41,6 @@ class areaCode {
     var db = jsondb(FileSync(pathFile));
 
     List<String>? regionNameList = await _getLocationNameList();
-    // db.defaults({'locatoin': locationNameList}).write();
 
     String authority = 'apis.data.go.kr';
     String unencodedPath = '/1741000/StanReginCd/getStanReginCdList';
@@ -72,7 +70,7 @@ class areaCode {
           String regionCode = row['region_cd'].toString().substring(0, 5);
           String regionName = row['locatadd_nm'];
           if (regionNameList!.contains(regionName)) {
-            print('regionCode : $regionCode, regionName : ${regionName}');
+            print('regionCode : $regionCode, regionName : $regionName');
             db
                 .get("region")
                 .push({"code": regionCode, "name": regionName}).write();
